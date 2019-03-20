@@ -2,6 +2,9 @@ package lottogame.domain;
 
 import java.util.Objects;
 
+/**
+ * 로또 번호 1개
+ */
 public class LottoNumber {
     public static final int MINIMUM_LOTTO_NUMBER = 1;
     public static final int MAXIMUM_LOTTO_NUMBER = 45;

@@ -3,9 +3,7 @@ package lottogame.service;
 import lottogame.domain.LottoNumber;
 import lottogame.domain.LottoGame;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,12 +29,12 @@ public class LottoNumberGeneratorImpl implements LottoNumberGenerator {
         return lottoNumbers;
     }
 
-    List<Integer> getLottoNumbers() {
+    Set<Integer> getLottoNumbers() {
         Collections.shuffle(numberPool);
 
         return numberPool.stream()
                         .limit(LottoGame.LOTTO_GAME_SIZE)
                         .sorted()
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

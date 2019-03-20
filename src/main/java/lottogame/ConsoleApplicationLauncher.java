@@ -1,9 +1,6 @@
 package lottogame;
 
-import lottogame.domain.LottoTicket;
-import lottogame.domain.LottoResult;
-import lottogame.domain.PurchaseAmount;
-import lottogame.domain.WinningNumbers;
+import lottogame.domain.*;
 import lottogame.view.InputView;
 import lottogame.view.ResultView;
 
@@ -14,8 +11,9 @@ public class ConsoleApplicationLauncher {
         LottoTicket lottoTicket = new LottoTicket(purchaseAmount);
         ResultView.showPurchasedResult(lottoTicket);
 
-        WinningNumbers winningNumbers = InputView.getWinningNumbers();
-        LottoResult lottoResult = new LottoResult(lottoTicket, winningNumbers);
+        LottoGame winningNumbers = InputView.getWinningNumbers();
+        LottoNumber bonusNumber = InputView.getBonusNumber();
+        LottoResult lottoResult = new LottoResult(lottoTicket, new WinningNumbers(winningNumbers, bonusNumber));
         ResultView.showWinningResult(lottoResult);
     }
 }

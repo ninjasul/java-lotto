@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -65,18 +66,18 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void parseIntegerList_for_empty_arrays() {
-        assertEquals(Collections.emptyList(), StringUtils.parseIntegerList(null));
-        assertEquals(Collections.emptyList(), StringUtils.parseIntegerList(new String[]{}));
-        assertEquals(Collections.emptyList(), StringUtils.parseIntegerList(new String[]{""}));
-        assertEquals(Collections.emptyList(), StringUtils.parseIntegerList(new String[]{"", "", ""}));
+    public void parseIntegerSet_for_empty_arrays() {
+        assertEquals(Collections.emptySet(), StringUtils.parseIntegerSet(null));
+        assertEquals(Collections.emptySet(), StringUtils.parseIntegerSet(new String[]{}));
+        assertEquals(Collections.emptySet(), StringUtils.parseIntegerSet(new String[]{""}));
+        assertEquals(Collections.emptySet(), StringUtils.parseIntegerSet(new String[]{"", "", ""}));
     }
 
     @Test
-    public void parseIntegerList() {
-        assertEquals(Arrays.asList(1), StringUtils.parseIntegerList(new String[]{"1"}));
-        assertEquals(Arrays.asList(1, 5), StringUtils.parseIntegerList(new String[]{"1", "5"}));
-        assertEquals(Arrays.asList(11, 33, 55), StringUtils.parseIntegerList(new String[]{"11", "33", "55"}));
+    public void parseIntegerSet() {
+        assertEquals(new HashSet(Arrays.asList(1)), StringUtils.parseIntegerSet(new String[]{"1"}));
+        assertEquals(new HashSet(Arrays.asList(1, 5)), StringUtils.parseIntegerSet(new String[]{"1", "5"}));
+        assertEquals(new HashSet(Arrays.asList(11, 33, 55)), StringUtils.parseIntegerSet(new String[]{"11", "33", "55"}));
     }
 
     @Test

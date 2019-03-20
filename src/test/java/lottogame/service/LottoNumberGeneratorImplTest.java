@@ -4,6 +4,7 @@ import lottogame.domain.LottoNumber;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Set;
 
 import static lottogame.domain.LottoNumber.MINIMUM_LOTTO_NUMBER;
 import static lottogame.domain.LottoNumber.MAXIMUM_LOTTO_NUMBER;
@@ -18,7 +19,7 @@ public class LottoNumberGeneratorImplTest {
     public void getLottoNumbers() {
         lottoNumberGenerator = new LottoNumberGeneratorImpl();
 
-        List<Integer> lottoNumbers = lottoNumberGenerator.getLottoNumbers();
+        Set<Integer> lottoNumbers = lottoNumberGenerator.getLottoNumbers();
         System.out.println(lottoNumbers);
 
         assertEquals(LOTTO_GAME_SIZE, lottoNumbers.size());

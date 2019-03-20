@@ -8,7 +8,7 @@ public class PurchaseAmount {
 
     public PurchaseAmount(long value) {
         if(isInvalid(value)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(LOTTO_PRICE + "원 이상의 금액을 입력 해 주세요.");
         }
         this.value = value;
     }

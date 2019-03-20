@@ -2,69 +2,89 @@ package lottogame.domain;
 
 import lottogame.util.StringUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import static lottogame.domain.LottoNumber.MAXIMUM_LOTTO_NUMBER;
+import static lottogame.domain.LottoNumber.MINIMUM_LOTTO_NUMBER;
+
+/**
+ * 로또 1게임
+ */
 public class LottoGame {
 
     public static final int LOTTO_GAME_SIZE = 6;
 
-    private final List<LottoNumber> gameNumbers;
+    private final LinkedHashSet<LottoNumber> gameNumbers;
 
     public LottoGame(String[] lottoNumbers) {
         if (isInvalid(lottoNumbers)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(getInvalidArgumentExceptionMessage());
         }
 
         gameNumbers = getGameNumbers(lottoNumbers);
     }
 
-    public LottoGame(List<Integer> lottoNumbers) {
+    public LottoGame(Set<Integer> lottoNumbers) {
         if (isInvalid(lottoNumbers)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(getInvalidArgumentExceptionMessage());
         }
 
         gameNumbers = getGameNumbers(lottoNumbers);
+    }
+
+    private String getInvalidArgumentExceptionMessage() {
+        return MINIMUM_LOTTO_NUMBER + "에서 " + MAXIMUM_LOTTO_NUMBER + "까지 중복없이 숫자 " + LOTTO_GAME_SIZE + "개를 입력하세요.";
     }
 
     static boolean isInvalid(String[] lottoNumbers) {
-        return lottoNumbers == null || lottoNumbers.length != LOTTO_GAME_SIZE;
+        return lottoNumbers == null ||
+                lottoNumbers.length != LOTTO_GAME_SIZE ||
+                isInvalid(new LinkedHashSet(Arrays.asList(lottoNumbers)));
     }
 
-    static boolean isInvalid(List<Integer> lottoNumbers) {
+    static boolean isInvalid(Set<Integer> lottoNumbers) {
         return lottoNumbers == null || lottoNumbers.size() != LOTTO_GAME_SIZE;
     }
 
-    static List<LottoNumber> getGameNumbers(String[] strings) {
+    static LinkedHashSet<LottoNumber> getGameNumbers(String[] gameNumbers) {
         return getGameNumbers(
-                Optional.ofNullable(strings)
-                        .map(StringUtils::parseIntegerList)
-                        .orElse(Collections.emptyList())
+                Optional.ofNullable(gameNumbers)
+                        .map(StringUtils::parseIntegerSet)
+                        .orElse(Collections.emptySet())
         );
     }
 
-    static List<LottoNumber> getGameNumbers(List<Integer> integers) {
-        return Optional.ofNullable(integers)
-                .orElse(Collections.emptyList())
+    static LinkedHashSet<LottoNumber> getGameNumbers(Set<Integer> gameNumbers) {
+        return Optional.ofNullable(gameNumbers)
+                .orElse(Collections.emptySet())
                 .stream()
                 .map(LottoNumber::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    List<LottoNumber> getGameNumbers() {
+    Set<LottoNumber> getGameNumbers() {
         return gameNumbers;
     }
 
-    public int getMatchedCount(LottoGame targetNumbers) {
+    public MatchStatus getMatchStatus(WinningNumbers winningNumbers) {
+        return new MatchStatus(
+            getMatchedCount(winningNumbers.getNumbers()),
+            isBonusNumberMatched(winningNumbers.getBonusNumber())
+        );
+    }
+
+    int getMatchedCount(LottoGame targetNumbers) {
         return (int) Optional.ofNullable(targetNumbers)
                 .map(LottoGame::getGameNumbers)
-                .orElse(Collections.emptyList())
+                .orElse(Collections.emptySet())
                 .stream()
                 .filter(this::contains)
                 .count();
+    }
+
+    boolean isBonusNumberMatched(LottoNumber bonusNumber) {
+        return gameNumbers.contains(bonusNumber);
     }
 
     public boolean contains(LottoNumber targetNumber) {

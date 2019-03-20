@@ -2,9 +2,7 @@ package lottogame.domain;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -21,25 +19,26 @@ public class LottoGameTest {
         assertTrue(LottoGame.isInvalid(new String[]{}));
         assertTrue(LottoGame.isInvalid(new String[]{"1", "2", "3", "4", "5"}));
         assertTrue(LottoGame.isInvalid(new String[]{"1", "2", "3", "4", "5", "6", "7"}));
+        assertTrue(LottoGame.isInvalid(new String[]{"1", "2", "2", "3", "4", "5"}));
         assertFalse(LottoGame.isInvalid(new String[]{"1", "2", "3", "4", "5", "6"}));
     }
 
     @Test
-    public void isInvalid_for_integer_list() {
-        assertTrue(LottoGame.isInvalid((List<Integer>)null));
-        assertTrue(LottoGame.isInvalid(Collections.emptyList()));
-        assertTrue(LottoGame.isInvalid(Arrays.asList(1, 2, 3, 4, 5)));
-        assertTrue(LottoGame.isInvalid(Arrays.asList(1, 2, 3, 4, 5, 6, 7)));
-        assertFalse(LottoGame.isInvalid(Arrays.asList(1, 2, 3, 4, 5, 6)));
+    public void isInvalid_for_integer_set() {
+        assertTrue(LottoGame.isInvalid((Set<Integer>)null));
+        assertTrue(LottoGame.isInvalid(Collections.emptySet()));
+        assertTrue(LottoGame.isInvalid(new HashSet(Arrays.asList(1, 2, 3, 4, 5))));
+        assertTrue(LottoGame.isInvalid(new HashSet(Arrays.asList(1, 2, 3, 4, 5, 6, 7))));
+        assertFalse(LottoGame.isInvalid(new HashSet(Arrays.asList(1, 2, 3, 4, 5, 6))));
     }
 
     @Test
     public void getGameNumbers_for_empty_string_array() {
-        List<LottoNumber> expected = Collections.emptyList();
+        Set<LottoNumber> expected = Collections.emptySet();
 
-        List<LottoNumber> actualForNull = LottoGame.getGameNumbers((String[])null);
-        List<LottoNumber> actualForEmpty = LottoGame.getGameNumbers(new String[]{});
-        List<LottoNumber> actualForEmpty2 = LottoGame.getGameNumbers(new String[]{"", "", "", "", "", ""});
+        Set<LottoNumber> actualForNull = LottoGame.getGameNumbers((String[])null);
+        Set<LottoNumber> actualForEmpty = LottoGame.getGameNumbers(new String[]{});
+        Set<LottoNumber> actualForEmpty2 = LottoGame.getGameNumbers(new String[]{"", "", "", "", "", ""});
 
         assertEquals(expected, actualForNull);
         assertEquals(expected, actualForEmpty);
@@ -48,49 +47,53 @@ public class LottoGameTest {
 
     @Test
     public void getGameNumbers_for_string_array() {
-        List<LottoNumber> expected = Arrays.asList(
+        Set<LottoNumber> expected = new HashSet(
+            Arrays.asList(
                 new LottoNumber(1), new LottoNumber(2), new LottoNumber(3),
                 new LottoNumber(4), new LottoNumber(5), new LottoNumber(6)
+            )
         );
 
-        List<LottoNumber> actual = LottoGame.getGameNumbers(new String[]{"1", "2", "3", "4", "5", "6"});
+        Set<LottoNumber> actual = LottoGame.getGameNumbers(new String[]{"1", "2", "3", "4", "5", "6"});
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void getGameNumbers_for_empty_integer_list() {
-        List<LottoNumber> expected = Collections.emptyList();
+    public void getGameNumbers_for_empty_integer_set() {
+        Set<LottoNumber> expected = Collections.emptySet();
 
-        List<LottoNumber> actualForNull = LottoGame.getGameNumbers((List<Integer>)null);
-        List<LottoNumber> actualForEmpty = LottoGame.getGameNumbers(Collections.emptyList());
+        Set<LottoNumber> actualForNull = LottoGame.getGameNumbers((Set<Integer>)null);
+        Set<LottoNumber> actualForEmpty = LottoGame.getGameNumbers(Collections.emptySet());
 
         assertEquals(expected, actualForNull);
         assertEquals(expected, actualForEmpty);
     }
 
     @Test
-    public void getGameNumbers_for_integer_list() {
-        List<LottoNumber> expected = Arrays.asList(
+    public void getGameNumbers_for_integer_set() {
+        Set<LottoNumber> expected = new HashSet(
+            Arrays.asList(
                 new LottoNumber(1), new LottoNumber(2), new LottoNumber(3),
                 new LottoNumber(4), new LottoNumber(5), new LottoNumber(6)
+            )
         );
 
-        List<LottoNumber> actual = LottoGame.getGameNumbers(Arrays.asList(1, 2, 3, 4, 5, 6));
+        Set<LottoNumber> actual = LottoGame.getGameNumbers(new HashSet(Arrays.asList(1, 2, 3, 4, 5, 6)));
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void getMatchedCount() {
-        List<Integer> gameNumbers = Arrays.asList(1, 2, 3, 4, 5, 6);
-        List<Integer> targetNumbers0 = Arrays.asList(40, 41, 42, 43, 44, 45);
-        List<Integer> targetNumbers1 = Arrays.asList(1, 41, 42, 43, 44, 45);
-        List<Integer> targetNumbers2 = Arrays.asList(1, 2, 42, 43, 44, 45);
-        List<Integer> targetNumbers3 = Arrays.asList(40, 41, 3, 4, 5, 45);
-        List<Integer> targetNumbers4 = Arrays.asList(40, 2, 3, 43, 5, 6);
-        List<Integer> targetNumbers5 = Arrays.asList(1, 2, 42, 4, 5, 6);
-        List<Integer> targetNumbers6 = Arrays.asList(1, 2, 3, 4, 5, 6);
+        Set<Integer> gameNumbers = getHashSet(Arrays.asList(1, 2, 3, 4, 5, 6));
+        Set<Integer> targetNumbers0 = getHashSet(Arrays.asList(40, 41, 42, 43, 44, 45));
+        Set<Integer> targetNumbers1 = getHashSet(Arrays.asList(1, 41, 42, 43, 44, 45));
+        Set<Integer> targetNumbers2 = getHashSet(Arrays.asList(1, 2, 42, 43, 44, 45));
+        Set<Integer> targetNumbers3 = getHashSet(Arrays.asList(40, 41, 3, 4, 5, 45));
+        Set<Integer> targetNumbers4 = getHashSet(Arrays.asList(40, 2, 3, 43, 5, 6));
+        Set<Integer> targetNumbers5 = getHashSet(Arrays.asList(1, 2, 42, 4, 5, 6));
+        Set<Integer> targetNumbers6 = getHashSet(Arrays.asList(1, 2, 3, 4, 5, 6));
 
         LottoGame game = new LottoGame(gameNumbers);
         LottoGame targetGame0 = new LottoGame(targetNumbers0);
@@ -110,9 +113,13 @@ public class LottoGameTest {
         assertEquals(6, game.getMatchedCount(targetGame6));
     }
 
+    private Set<Integer> getHashSet(List<Integer> list) {
+        return new HashSet(list);
+    }
+
     @Test
     public void contains() {
-        List<Integer> gameNumbers = getRangedNumbers(MINIMUM_LOTTO_NUMBER, LOTTO_GAME_SIZE);
+        Set<Integer> gameNumbers = getRangedNumbers(MINIMUM_LOTTO_NUMBER, LOTTO_GAME_SIZE);
 
         LottoGame game = new LottoGame(gameNumbers);
 
@@ -120,16 +127,16 @@ public class LottoGameTest {
             assertTrue(game.contains(new LottoNumber(curTargetNumber)));
         }
 
-        List<Integer> uncontainedTargetNumbers = getRangedNumbers(LOTTO_GAME_SIZE + 1, MAXIMUM_LOTTO_NUMBER);
+        Set<Integer> uncontainedTargetNumbers = getRangedNumbers(LOTTO_GAME_SIZE + 1, MAXIMUM_LOTTO_NUMBER);
 
         for(int curTargetNumber : uncontainedTargetNumbers) {
             assertFalse(game.contains(new LottoNumber(curTargetNumber)));
         }
     }
 
-    private List<Integer> getRangedNumbers(int from, int to) {
+    private Set<Integer> getRangedNumbers(int from, int to) {
         return IntStream.rangeClosed(from, to)
                 .boxed()
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 }

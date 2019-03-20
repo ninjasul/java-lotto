@@ -2,6 +2,7 @@ package lottogame.util;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StringUtils {
 
@@ -59,15 +60,24 @@ public class StringUtils {
         }
     }
 
-    public static List<Integer> parseIntegerList(String[] strings) {
-        return Optional.ofNullable(strings)
-                        .filter(array -> array.length > 0)
-                        .map(Arrays::asList)
-                        .orElse(Collections.emptyList())
-                        .stream()
-                        .filter(s -> !StringUtils.isEmpty(s))
-                        .map(StringUtils::getInteger)
+    /*public static List<Integer> parseIntegerList(String[] strings) {
+        return getIntegerStream(strings)
                         .collect(Collectors.toList());
+    }*/
+
+    public static Set<Integer> parseIntegerSet(String[] strings) {
+        return getIntegerStream(strings)
+                .collect(Collectors.toSet());
+    }
+
+    private static Stream<Integer> getIntegerStream(String[] strings) {
+        return Optional.ofNullable(strings)
+                .filter(array -> array.length > 0)
+                .map(Arrays::asList)
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(string -> !StringUtils.isEmpty(string))
+                .map(StringUtils::getInteger);
     }
 
     public static String removeWhitespace(String string) {
