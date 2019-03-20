@@ -16,22 +16,6 @@ public class LottoNumberTest {
     private LottoNumber lottoNumber;
 
     @Test
-    public void isInvalid() {
-        List<Integer> invalidLottoNumbers =
-                Arrays.asList(MINIMUM_LOTTO_NUMBER-1, MAXIMUM_LOTTO_NUMBER+1);
-
-        for(int curNumber : invalidLottoNumbers) {
-            assertTrue(lottoNumber.isInvalid(curNumber));
-        }
-
-        List<Integer> validLottoNumbers = getValidLottoNumbers();
-
-        for(int curNumber : validLottoNumbers) {
-            assertFalse(lottoNumber.isInvalid(curNumber));
-        }
-    }
-
-    @Test
     public void equalsNumber() {
         List<Integer> validLottoNumbers = getValidLottoNumbers();
 

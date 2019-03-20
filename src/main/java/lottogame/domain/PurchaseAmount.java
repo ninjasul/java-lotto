@@ -1,15 +1,15 @@
 package lottogame.domain;
 
-public class PurchaseAmount {
+import lottogame.validator.InputValidatable;
 
-    static final long LOTTO_PRICE = 1000;
+public class PurchaseAmount implements InputValidatable<Long> {
+
+    public static final long LOTTO_PRICE = 1000;
 
     private long value;
 
     public PurchaseAmount(long value) {
-        if(isInvalid(value)) {
-            throw new IllegalArgumentException(LOTTO_PRICE + "원 이상의 금액을 입력 해 주세요.");
-        }
+        validate(value);
         this.value = value;
     }
 
@@ -21,7 +21,13 @@ public class PurchaseAmount {
         return value/LOTTO_PRICE;
     }
 
-    static boolean isInvalid(long value) {
-        return (value < LOTTO_PRICE || value >= Long.MAX_VALUE);
+    @Override
+    public boolean isInvalid(Long target) {
+        return target < LOTTO_PRICE || target >= Long.MAX_VALUE;
+    }
+
+    @Override
+    public String getInvalidMessage() {
+        return LOTTO_PRICE + "원 이상의 금액을 입력 해 주세요.";
     }
 }

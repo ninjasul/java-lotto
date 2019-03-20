@@ -1,5 +1,7 @@
 package lottogame.domain;
 
+import lottogame.validator.InputValidatable;
+
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
@@ -12,26 +14,15 @@ import static lottogame.domain.LottoNumber.MINIMUM_LOTTO_NUMBER;
 /**
  * 로또 1게임
  */
-public class LottoNumberPackage {
+public class LottoNumberPackage implements InputValidatable<Set<Integer>> {
 
     public static final int LOTTO_GAME_SIZE = 6;
 
     private final LinkedHashSet<LottoNumber> numbers;
 
     public LottoNumberPackage(Set<Integer> lottoNumbers) {
-        if (isInvalid(lottoNumbers)) {
-            throw new IllegalArgumentException(getInvalidArgumentExceptionMessage());
-        }
-
+        validate(lottoNumbers);
         numbers = getGameNumbers(lottoNumbers);
-    }
-
-    private String getInvalidArgumentExceptionMessage() {
-        return MINIMUM_LOTTO_NUMBER + "에서 " + MAXIMUM_LOTTO_NUMBER + "까지 중복없이 숫자 " + LOTTO_GAME_SIZE + "개를 입력하세요.";
-    }
-
-    private static boolean isInvalid(Set<Integer> lottoNumbers) {
-        return lottoNumbers == null || lottoNumbers.size() != LOTTO_GAME_SIZE;
     }
 
     private static LinkedHashSet<LottoNumber> getGameNumbers(Set<Integer> gameNumbers) {
@@ -81,6 +72,16 @@ public class LottoNumberPackage {
         if (o == null || getClass() != o.getClass()) return false;
         LottoNumberPackage that = (LottoNumberPackage) o;
         return numbers.equals(that.numbers);
+    }
+
+    @Override
+    public boolean isInvalid(Set<Integer> target) {
+        return target == null || target.size() != LOTTO_GAME_SIZE;
+    }
+
+    @Override
+    public String getInvalidMessage() {
+        return MINIMUM_LOTTO_NUMBER + "에서 " + MAXIMUM_LOTTO_NUMBER + "까지 중복없이 숫자 " + LOTTO_GAME_SIZE + "개를 입력하세요.";
     }
 
     @Override

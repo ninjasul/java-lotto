@@ -7,7 +7,6 @@ import java.util.Set;
 
 import static lottogame.domain.LottoNumberPackage.LOTTO_GAME_SIZE;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 public class LottoNumberGeneratorImplTest {
 
@@ -22,7 +21,7 @@ public class LottoNumberGeneratorImplTest {
 
         assertEquals(LOTTO_GAME_SIZE, lottoNumbers.size());
         for(int curNumber : lottoNumbers) {
-            assertFalse(LottoNumber.isInvalid(curNumber));
+            assertEquals(curNumber, new LottoNumber(curNumber).getNumber());
         }
     }
 }
