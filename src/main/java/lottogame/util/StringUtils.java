@@ -1,8 +1,10 @@
 package lottogame.util;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class StringUtils {
 
@@ -29,55 +31,11 @@ public class StringUtils {
         return sb.toString();
     }
 
-    public static int parseInt(String s) {
-        return Optional.ofNullable(s)
-                        .map(String::trim)
-                        .map(StringUtils::getInteger)
-                        .orElse(0);
-    }
-
-    public static long parseLong(String s) {
-        return Optional.ofNullable(s)
-                .map(String::trim)
-                .map(StringUtils::getLong)
-                .orElse(0L);
-    }
-
-
-    public static Integer getInteger(String str) {
-        try {
-            return Integer.valueOf(str);
-        } catch(Exception e) {
-            return 0;
-        }
-    }
-
-    public static Long getLong(String str) {
-        try {
-            return Long.valueOf(str);
-        } catch(Exception e) {
-            return 0L;
-        }
-    }
-
-    /*public static List<Integer> parseIntegerList(String[] strings) {
-        return getIntegerStream(strings)
-                        .collect(Collectors.toList());
-    }*/
-
     public static Set<Integer> parseIntegerSet(String[] strings) {
-        return getIntegerStream(strings)
-                .collect(Collectors.toSet());
-    }
-
-    private static Stream<Integer> getIntegerStream(String[] strings) {
-        return Optional.ofNullable(strings)
-                .filter(array -> array.length > 0)
-                .map(Arrays::asList)
-                .orElse(Collections.emptyList())
-                .stream()
+        return Arrays.stream(strings)
                 .filter(string -> !StringUtils.isEmpty(string))
-                .map(StringUtils::getInteger);
+                .map(Integer::parseInt)
+                .collect(Collectors.toSet());
     }
 
     public static String removeWhitespace(String string) {

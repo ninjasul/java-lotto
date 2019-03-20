@@ -5,14 +5,12 @@ import java.util.stream.Collectors;
 
 public class LottoResult {
 
-    private final PurchaseAmount purchaseAmount;
-    private final List<LottoGame> automaticNumbers;
-    private final WinningNumbers winningNumbers;
+    private final LottoTicket lottoTicket;
+    private final WinningInfo winningNumbers;
     private final Map<Rank,Long> winningCountPerRank;
 
-    public LottoResult(LottoTicket lottoTicket, WinningNumbers winningNumbers) {
-        purchaseAmount = lottoTicket.getPurchaseAmount();
-        automaticNumbers = lottoTicket.getAutomaticNumbers();
+    public LottoResult(LottoTicket lottoTicket, WinningInfo winningNumbers) {
+        this.lottoTicket = lottoTicket;
         this.winningNumbers = winningNumbers;
         winningCountPerRank = getWinningCountPerRank();
     }
@@ -35,9 +33,13 @@ public class LottoResult {
     }
 
     Map<Rank, Long> getWinningCountPerRank() {
-        return automaticNumbers.stream()
+        return getAutomaticNumbers().stream()
                 .map(gameNumber -> gameNumber.getMatchStatus(winningNumbers))
                 .collect(Collectors.groupingBy(Rank::valueOf, Collectors.counting()));
+    }
+
+    private List<LottoNumberPackage> getAutomaticNumbers() {
+        return lottoTicket.getAutomaticNumbers();
     }
 
     long getWinningCount(Rank key) {
@@ -51,7 +53,11 @@ public class LottoResult {
     }
 
     double getProfitRate() {
-         return ((double)getTotalWinningMoney() / (double)purchaseAmount.getValue());
+         return ((double)getTotalWinningMoney() / (double)getPurchaseAmount().getValue());
+    }
+
+    private PurchaseAmount getPurchaseAmount() {
+        return lottoTicket.getPurchaseAmount();
     }
 
     public long getTotalWinningMoney() {

@@ -20,7 +20,7 @@ public class ResultView {
         System.out.println("\n" + purchaseCount.getValue() + PURCHASE_RESULT_TITLE);
     }
 
-    private static void showPurchasedLottoNumbers(List<LottoGame> purchasedLottoNumbers) {
+    private static void showPurchasedLottoNumbers(List<LottoNumberPackage> purchasedLottoNumbers) {
         Optional.ofNullable(purchasedLottoNumbers)
                 .orElse(Collections.emptyList())
                 .forEach(System.out::println);

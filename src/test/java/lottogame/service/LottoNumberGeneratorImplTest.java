@@ -3,13 +3,11 @@ package lottogame.service;
 import lottogame.domain.LottoNumber;
 import org.junit.Test;
 
-import java.util.List;
 import java.util.Set;
 
-import static lottogame.domain.LottoNumber.MINIMUM_LOTTO_NUMBER;
-import static lottogame.domain.LottoNumber.MAXIMUM_LOTTO_NUMBER;
-import static lottogame.domain.LottoGame.LOTTO_GAME_SIZE;
-import static org.junit.Assert.*;
+import static lottogame.domain.LottoNumberPackage.LOTTO_GAME_SIZE;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class LottoNumberGeneratorImplTest {
 

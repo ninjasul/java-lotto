@@ -1,6 +1,7 @@
 package lottogame.util;
 
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,18 +13,36 @@ import static org.junit.Assert.*;
 public class StringUtilsTest {
 
     @Test
-    public void isEmpty() {
-        assertTrue(StringUtils.isEmpty((String)null));
+    public void isEmpty_for_empty_string() {
+        assertTrue(StringUtils.isEmpty((String) null));
         assertTrue(StringUtils.isEmpty(""));
-        assertFalse(StringUtils.isEmpty("aaa"));
+    }
 
+    @Test
+    public void isEmpty_for_string() {
+        assertFalse(StringUtils.isEmpty("aaa"));
+    }
+
+    @Test
+    public void isEmpty_for_empty_list() {
         assertTrue(StringUtils.isEmpty((List<String>)null));
         assertTrue(StringUtils.isEmpty(Collections.emptyList()));
+    }
+
+    @Test
+    public void isEmpty_for_list() {
         assertFalse(StringUtils.isEmpty(Arrays.asList("a")));
         assertFalse(StringUtils.isEmpty(Arrays.asList("a", "b", "c")));
+    }
 
+    @Test
+    public void isEmpty_for_empty_array() {
         assertTrue(StringUtils.isEmpty((String[])null));
         assertTrue(StringUtils.isEmpty(new String[]{}));
+    }
+
+    @Test
+    public void isEmpty_for_array() {
         assertFalse(StringUtils.isEmpty(new String[]{"a"}));
         assertFalse(StringUtils.isEmpty(new String[]{"a", "b", "c"}));
     }
@@ -45,29 +64,13 @@ public class StringUtilsTest {
         assertEquals("abcdabcdabcd", StringUtils.repeat("abcd", 3));
     }
 
-    @Test
-    public void parseInt() {
-        assertEquals(0, StringUtils.parseInt(null));
-        assertEquals(0, StringUtils.parseInt(""));
-        assertEquals(0, StringUtils.parseInt("a"));
-        assertEquals(12345, StringUtils.parseInt("12345"));
-        assertEquals(Integer.MAX_VALUE+1, StringUtils.parseInt(String.valueOf(Integer.MAX_VALUE+1)));
-        assertEquals(Integer.MIN_VALUE-1, StringUtils.parseInt(String.valueOf(Integer.MIN_VALUE-1)));
-    }
-
-    @Test
-    public void parseLong() {
-        assertEquals(0L, StringUtils.parseLong(null));
-        assertEquals(0L, StringUtils.parseLong(""));
-        assertEquals(0L, StringUtils.parseLong("a"));
-        assertEquals(0L, StringUtils.parseInt(String.valueOf(Long.MAX_VALUE+1)));
-        assertEquals(0L, StringUtils.parseInt(String.valueOf(Long.MIN_VALUE-1)));
-        assertEquals(12345L, StringUtils.parseInt("12345"));
+    @Test(expected = NullPointerException.class)
+    public void parseIntegerSet_for_null() {
+        assertEquals(Collections.emptySet(), StringUtils.parseIntegerSet(null));
     }
 
     @Test
     public void parseIntegerSet_for_empty_arrays() {
-        assertEquals(Collections.emptySet(), StringUtils.parseIntegerSet(null));
         assertEquals(Collections.emptySet(), StringUtils.parseIntegerSet(new String[]{}));
         assertEquals(Collections.emptySet(), StringUtils.parseIntegerSet(new String[]{""}));
         assertEquals(Collections.emptySet(), StringUtils.parseIntegerSet(new String[]{"", "", ""}));
